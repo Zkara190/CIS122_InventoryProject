@@ -4,6 +4,8 @@ namespace InvManager;
 
 public class InventoryManager
 {
+    //if we could set the size of the of InventoryItem array based on csv size (if one exists)
+    //would be cool, not neccesary.
     private InventoryItem[] items;
     private int count;
 
@@ -15,24 +17,26 @@ public class InventoryManager
 
     public bool AddItem(InventoryItem item)
     {
-        if (count >= items.Length)
+        if (count >= items.Length)                      // input validation, good!
         {
             Console.WriteLine("Inventory is full, cannot add more items.");
             return false;
         }
 
-        items[count++] = item;
+        items[count++] = item;                            // look up postfix, prefix arithmatic, this will not increment the count till after operation is done. 
         Console.WriteLine("Item added successfully.");
         return true;
     }
 
+    // this can be used to remove bulk items, of the same sku, good!
+    // we should also make one that removes based on ID / status
     public bool RemoveItem(string sku)
     {
         for (int i = 0; i < count; i++)
         {
             if (items[i].SKU == sku)
             {
-                items[i] = items[--count];
+                items[i] = items[--count];                // again, postfix prefix arithmatic, is the count incrementing when you want?
                 items[count] = null;
                 Console.WriteLine("Item removed successfully.");
                 return true;
@@ -52,6 +56,7 @@ public class InventoryManager
         }
     }
 
+    // add a spesific ID lookup method
     public void LookupItem(string sku)
     {
         for (int i = 0; i < count; i++)
@@ -98,5 +103,8 @@ public class InventoryManager
 
         Console.WriteLine("Inventory loaded from file.");
     }
+
+    // add additional modifiers to change spesific items values.
+    
 }
 
