@@ -4,6 +4,8 @@ namespace InvManager;
 
 public class InventoryItem
 {
+    // add item ID (int), and Status (string)
+    // Protected instead of public?
     public string Name { get; set; }
     public string SKU { get; set; }
     public int Quantity { get; set; }
@@ -40,6 +42,7 @@ public class InventoryItem
         return $"{Quantity}";
     }
 
+    //what is this doing?
     public static InventoryItem FromCsv(string csvLine)
     {
         var values = csvLine.Split(',');
