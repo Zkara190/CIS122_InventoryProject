@@ -4,7 +4,7 @@ namespace InvManager
     {
         private readonly int lowStock;
 
-        public InvStatus(int lowStock = 5)
+        public InvStatus(int lowStock = 10)
         {
             this.lowStock = lowStock;
         }
