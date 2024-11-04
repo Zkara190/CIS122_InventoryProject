@@ -1,0 +1,28 @@
+namespace InvManager
+{
+    public class InvStatus
+    {
+        private readonly int lowStock;
+
+        public InvStatus(int lowStock = 5)
+        {
+            this.lowStock = lowStock;
+        }
+
+        public string GetStatus(InventoryItem item)
+        {
+            if (item.Quantity == 0)
+            {
+                return "This item is out of stock";
+            }
+            else if (item.Quantity <= lowStock)
+            {
+                return "This item is low on stock";
+            }
+            else
+            {
+                return "In Stock";
+            }
+        }
+    }
+}
