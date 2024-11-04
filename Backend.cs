@@ -6,6 +6,7 @@ public class InventoryItem
 {
     // add item ID (int), and Status (string)
     // Protected instead of public?
+    public int ID { get; set; } // Unique Item ID
     public string Name { get; set; }
     public string SKU { get; set; }
     public int Quantity { get; set; }
@@ -19,13 +20,19 @@ public class InventoryItem
 
     public override string ToString()
     {
-        return $"Name: {Name}, SKU: {SKU}, Quantity: {Quantity}";
+        return $"$"ID: {ID}, Name: {Name}, SKU: {SKU}, Quantity: {Quantity}";
     }
 
     public string ToCsv()
     {
-        return $"{Name},{SKU},{Quantity}";
+        return $"{ID}, {Name}, {SKU}, {Quantity}";
     }
+
+    public string ReturnID()
+    {
+        return $"{ID}";
+    }
+
 
     public string ReturnName()
     {
