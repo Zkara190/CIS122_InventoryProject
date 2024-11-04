@@ -29,7 +29,24 @@ public class InventoryManager
     }
 
     // this can be used to remove bulk items, of the same sku, good!
-    // we should also make one that removes based on ID / status
+    // removes based on ID / status
+    public bool RemoveItem(int id)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (items[i].ID == id)
+                {
+                    items[i] = items[--count];
+                    items[count] = null;
+                    Console.WriteLine("Item removed successfully.");
+                    return true;
+                }
+            }
+
+            Console.WriteLine("Item not found.");
+            return false;
+        }
+    
     public bool RemoveItem(string sku)
     {
         for (int i = 0; i < count; i++)
@@ -56,7 +73,21 @@ public class InventoryManager
         }
     }
 
-    // add a spesific ID lookup method
+    // spesific ID lookup method
+    public void LookupItem(int id)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (items[i].ID == id)
+                {
+                    Console.WriteLine($"Item found: {items[i]}");
+                    return;
+                }
+            }
+
+            Console.WriteLine("Item not found.");
+        }
+    
     public void LookupItem(string sku)
     {
         for (int i = 0; i < count; i++)
