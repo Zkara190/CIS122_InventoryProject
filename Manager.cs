@@ -73,7 +73,7 @@ public class InventoryManager
         }
     }
 
-    // spesific ID lookup method
+    // specific ID lookup method
     public void LookupItem(int id)
         {
             for (int i = 0; i < count; i++)
