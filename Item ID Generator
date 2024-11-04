@@ -1,0 +1,14 @@
+using System;
+
+namespace InvManager
+{
+    public class ItemUiqueID
+    {
+        private static int currentID = 1000;
+
+        public int GenerateID()
+        {
+            return ++currentID;
+        }
+    }
+}
