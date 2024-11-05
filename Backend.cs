@@ -9,8 +9,8 @@ public class InventoryItem
     public int ID { get; set; } // Unique Item ID
     public string Name { get; set; }
     public string SKU { get; set; }
-    public int Quantity { get; set; }
-
+    public string Status { get; set; }
+    
     public InventoryItem(string name, string sku, int quantity)
     {
         Name = name;
@@ -20,12 +20,12 @@ public class InventoryItem
 
     public override string ToString()
     {
-        return $"$"ID: {ID}, Name: {Name}, SKU: {SKU}, Quantity: {Quantity}";
+        return $"$"ID: {ID}, Name: {Name}, SKU: {SKU}, Status: {Status}";
     }
 
     public string ToCsv()
     {
-        return $"{ID}, {Name}, {SKU}, {Quantity}";
+        return $"{ID}, {Name}, {SKU}, {Status}";
     }
 
     public string ReturnID()
@@ -42,11 +42,6 @@ public class InventoryItem
     public string ReturnSKU()
     {
         return $"{SKU}";
-    }
-
-    public string ReturnQuantity()
-    {
-        return $"{Quantity}";
     }
 
     //what is this doing?
