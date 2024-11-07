@@ -17,7 +17,7 @@ namespace InvManager
         // add a spesific ID lookup method
         public void LookupItem(string sku)
         {
-            foreach (InventoryItem entry in stock)           // inventory class don't have enumorator so this line dosnt work properly
+            foreach (var entry in stock.Values)           // fixed - CF
             {
                 if (entry.SKU == sku)
                 {
@@ -52,19 +52,21 @@ namespace InvManager
                 return;
             }
 
+            stock.Clear(); // Clear existing data before loading new items
+
             foreach (var line in File.ReadLines(filePath))
             {
-                // need to change to load with dictionary data structor. not sure on how "File" works
-                // if (!string.IsNullOrWhiteSpace(line))
-                // {
-                //     items[count++] = InventoryItem.FromCsv(line);
-                // }
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    InventoryItem item = InventoryItem.FromCsv(line);
+                    stock[item.ID] = item; // Use item ID as the dictionary key
+                }
             }
 
             Console.WriteLine("Inventory loaded from file.");
         }
 
-        public void Modify(int ID, string? _status, string? _name,int? _sku)
+        public void Modify(int ID, string? _status, string? _name,string? _sku) // Changed _sku to a string as we have it defined as a string property of InventoryItem
         {
             // given an ID, if any parameter is not null, overide that items field for corresponding parameter
         }
