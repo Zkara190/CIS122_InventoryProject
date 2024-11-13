@@ -2,7 +2,7 @@ Latest source file and build hosted here:
 https://cloud.collinframe.com/s/7iaZY9YXCgEGdYp
 
 
-Files are currently hosted here:
+Files used to be hosted here:
 https://mnscu-my.sharepoint.com/:f:/g/personal/cv6563cl_go_minnstate_edu/EiCiwXwfuAJIgndoSWYuFmUBCvlzDNIn2LWoq1AIgKA2pQ
 
 Has source code and exe file that you can run right out of the box.
