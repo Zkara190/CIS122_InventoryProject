@@ -7,4 +7,4 @@ https://mnscu-my.sharepoint.com/:f:/g/personal/cv6563cl_go_minnstate_edu/EiCiwXw
 
 Has source code and exe file that you can run right out of the box.
 Works native on windows
-Works via mono/wine/etc as well for macOS and linux
+Works via VM/Crossover as well for macOS, Linux
