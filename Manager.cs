@@ -1,141 +1,107 @@
 ﻿using System;
-namespace InvManager;
-
-
-public class InventoryManager
+namespace InvManager
 {
-    //if we could set the size of the of InventoryItem array based on csv size (if one exists)
-    //would be cool, not neccesary.
-    private InventoryItem[] items;
-    private int count;
 
-    public InventoryManager(int capacity)
-    {
-        items = new InventoryItem[capacity];
-        count = 0;
-    }
 
-    public bool AddItem(InventoryItem item)
+    public class InventoryManager
     {
-        if (count >= items.Length)                      // input validation, good!
+        Inventory stock = new;
+
+        public InventoryManager()
         {
-            Console.WriteLine("Inventory is full, cannot add more items.");
-            return false;
         }
 
-        items[count++] = item;                            // look up postfix, prefix arithmatic, this will not increment the count till after operation is done. 
-        Console.WriteLine("Item added successfully.");
-        return true;
-    }
-
-    // this can be used to remove bulk items, of the same sku, good!
-    // removes based on ID / status
-    public bool RemoveItem(int id)
+        // add a spesific ID lookup method
+        public void LookupItem(string sku)
         {
-            for (int i = 0; i < count; i++)
+            foreach (var entry in stock.Values)           // fixed - CF
             {
-                if (items[i].ID == id)
+                if (entry.SKU == sku)
                 {
-                    items[i] = items[--count];
-                    items[count] = null;
-                    Console.WriteLine("Item removed successfully.");
-                    return true;
-                }
-            }
-
-            Console.WriteLine("Item not found.");
-            return false;
-        }
-    
-    public bool RemoveItem(string sku)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            if (items[i].SKU == sku)
-            {
-                items[i] = items[--count];                // again, postfix prefix arithmatic, is the count incrementing when you want?
-                items[count] = null;
-                Console.WriteLine("Item removed successfully.");
-                return true;
-            }
-        }
-
-        Console.WriteLine("Item not found.");
-        return false;
-    }
-
-    public void ListItems()
-    {
-        Console.WriteLine("Current Inventory:");
-        for (int i = 0; i < count; i++)
-        {
-            Console.WriteLine(items[i]);
-        }
-    }
-
-    // specific ID lookup method
-    public void LookupItem(int id)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                if (items[i].ID == id)
-                {
-                    Console.WriteLine($"Item found: {items[i]}");
+                    Console.WriteLine($"Item found: Name: {entry.Name}, ID: {entry.ID}");
                     return;
                 }
             }
 
             Console.WriteLine("Item not found.");
         }
-    
-    public void LookupItem(string sku)
-    {
-        for (int i = 0; i < count; i++)
+
+        public void SaveToFile(string filePath)
         {
-            if (items[i].SKU == sku)
+            using (StreamWriter writer = new StreamWriter(filePath))
             {
-                Console.WriteLine($"Item found: Name: {items[i].Name}, Quantity: {items[i].Quantity}");
+                foreach(KeyValuePair<int, InventoryItem> entry in stock)
+                {
+                    writer.WriteLine(entry.Value.ToCsv());     
+                }
+            }
+
+            Console.WriteLine("Inventory saved to file.");
+        }
+
+        public void LoadFromFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("File not found.");
                 return;
             }
-        }
 
-        Console.WriteLine("Item not found.");
-    }
+            stock.Clear(); // Clear existing data before loading new items
 
-    public void SaveToFile(string filePath)
-    {
-        using (StreamWriter writer = new StreamWriter(filePath))
-        {
-            for (int i = 0; i < count; i++)
+            foreach (var line in File.ReadLines(filePath))
             {
-                writer.WriteLine(items[i].ToCsv());
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    InventoryItem item = InventoryItem.FromCsv(line);
+                    stock[item.ID] = item; // Use item ID as the dictionary key
+                }
             }
+
+            Console.WriteLine("Inventory loaded from file.");
         }
-
-        Console.WriteLine("Inventory saved to file.");
-    }
-
-    public void LoadFromFile(string filePath)
+        
+        public static bool UpdateItemQuantity(this InventoryManager manager , string sku, int newQuantity)
     {
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine("File not found.");
-            return;
-        }
+        //Method to update the quantity of an item by sku
+        InventoryItem item = manager.FindItemBySku(sku);
 
-        count = 0;
-        foreach (var line in File.ReadLines(filePath))
+        if(item != null)
         {
-            if (!string.IsNullOrWhiteSpace(line))
-            {
-                items[count++] = InventoryItem.FromCsv(line);
-            }
+            item.Quantity = newQuantity;
+            return true;
         }
+        Console.WriteLine("Item not found");
+        return false;
+    }
+    public static bool UpdateItemQuantity(this InventoryManager manager, string sku, int newPrice)
+    {
+        //Method to update the price of an item by sku
+        InventoryItem item = manager.FindItemBySku(sku);
 
-        Console.WriteLine("Inventory loaded from file.");
+        if (item != null)
+        {
+            item.Price = newPrice;
+            return true;
+        }
+        Console.WriteLine("Item not found");
+        return false;
     }
 
-    // add additional modifiers to change spesific items values.
-    
+    public static bool UpdateItemName(this InventoryManager manager, string sku, string newName)
+    {
+        //Method to update the name of an item by sku
+        InventoryItem item = manager.FindItemBySku(sku);
+
+        if (item != null)
+        {
+            item.Name = newName;
+            return true;
+        }
+        Console.WriteLine("Item not found");
+        return false;
+
+    }
+
+    }
 }
-

@@ -5,24 +5,30 @@ namespace InvManager
     class Inventory
     {
 
-        int BUCKET; //v estigial
-        Dictionary<int, InventoryItem> inventory =      // making dictionary, int is a key, this will be ID
+        public Inventory()
+        {
+            //empty Constructor
+        }
+        public Dictionary<int, InventoryItem> inventory =      // making dictionary (hashtable), int is a key, this will be ID
             new Dictionary<int, InventoryItem>();
 
+        public void SetID(InventoryItem item)
+        {
+            int index = inventory.Count + 1;                   // gets the amount of items in inventory, add one
+            item.ID = index;                               // Set the count to items ID
+        }
         public void AddToInventory(InventoryItem item)
         {
-            int count = inventory.Count+1;                                        // get the number of items in dictionary, next item is that plus 1
-            inventory.TryAdd(count, item);
-            Console.WriteLine("Inventory item added with ID " + count + "\n");  // needs to change Items ID number based on position in dictionary
-              
-
+            SetID(item);
+            inventory.TryAdd(item.ID, item);
+            Console.WriteLine("Inventory item added with ID " + item.ID + "\n");  
         }
 
         public void AddToInventory(InventoryItem item, int _quantity)       // can add multiple of the same item
         {
             for(int i = 0; i < _quantity; i++ )                         
             {
-                AddToInventory(item);                                       // needs to change Items ID number based on position in dictionary
+                AddToInventory(item);                                  
             }  
         }
 
