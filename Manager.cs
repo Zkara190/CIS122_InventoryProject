@@ -3,18 +3,14 @@ namespace InvManager
 {
 
 
-    public class InventoryManager
+    public static class InventoryManager
     {
-        Inventory stock = new;
-
-        public InventoryManager()
-        {
-        }
+        static Inventory stock = new();
 
         // add a spesific ID lookup method
-        public void LookupItem(string sku)
+        static public void LookupItem(string sku)
         {
-            foreach (var entry in stock.Values)           // fixed - CF
+            foreach (var entry in stock.inventory.Values)           // fixed - CF
             {
                 if (entry.SKU == sku)
                 {
@@ -26,20 +22,20 @@ namespace InvManager
             Console.WriteLine("Item not found.");
         }
 
-        public void SaveToFile(string filePath)
+        static public void SaveToFile(string filePath)
         {
             using (StreamWriter writer = new StreamWriter(filePath))
             {
-                foreach(KeyValuePair<int, InventoryItem> entry in stock)
+                foreach (KeyValuePair<int, InventoryItem> entry in stock.inventory)
                 {
-                    writer.WriteLine(entry.Value.ToCsv());     
+                    writer.WriteLine(entry.Value.ToCsv());
                 }
             }
 
             Console.WriteLine("Inventory saved to file.");
         }
 
-        public void LoadFromFile(string filePath)
+        static public void LoadFromFile(string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -47,61 +43,63 @@ namespace InvManager
                 return;
             }
 
-            stock.Clear(); // Clear existing data before loading new items
+            // stock.Clear(); // Clear existing data before loading new items // commenting out becuase stic
 
             foreach (var line in File.ReadLines(filePath))
             {
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     InventoryItem item = InventoryItem.FromCsv(line);
-                    stock[item.ID] = item; // Use item ID as the dictionary key
+                    stock.inventory[item.ID] = item; // Use item ID as the dictionary key
                 }
             }
 
             Console.WriteLine("Inventory loaded from file.");
         }
-        
-        public static bool UpdateItemQuantity(this InventoryManager manager , string sku, int newQuantity)
-    {
-        //Method to update the quantity of an item by sku
-        InventoryItem item = manager.FindItemBySku(sku);
 
-        if(item != null)
+        public static void UpdateItemName(string sku, string newName)
         {
-            item.Quantity = newQuantity;
-            return true;
+            //Method to update the name of an item by sku
+
+            foreach (var entry in stock.inventory.Values)           // fixed - CF
+            {
+                if (entry.SKU == sku)
+                {
+                    entry.Name = newName;
+                }
+            }
         }
-        Console.WriteLine("Item not found");
-        return false;
-    }
-    public static bool UpdateItemQuantity(this InventoryManager manager, string sku, int newPrice)
-    {
-        //Method to update the price of an item by sku
-        InventoryItem item = manager.FindItemBySku(sku);
 
-        if (item != null)
-        {
-            item.Price = newPrice;
-            return true;
-        }
-        Console.WriteLine("Item not found");
-        return false;
-    }
+        //commenting out the following block as it's calling undefined methods not in the files
 
-    public static bool UpdateItemName(this InventoryManager manager, string sku, string newName)
-    {
-        //Method to update the name of an item by sku
-        InventoryItem item = manager.FindItemBySku(sku);
+        //    public static bool updateitemquantity(this inventorymanager manager , string sku, int newquantity)
+        //{
+        //    //method to update the quantity of an item by sku
+        //    inventoryitem item = manager.finditembysku(sku);
 
-        if (item != null)
-        {
-            item.Name = newName;
-            return true;
-        }
-        Console.WriteLine("Item not found");
-        return false;
+        //    if(item != null)
+        //    {
+        //        item.quantity = newquantity;
+        //        return true;
+        //    }
+        //    console.writeline("item not found");
+        //    return false;
+        //}
+        //public static bool updateitemquantity(this inventorymanager manager, string sku, int newprice)
+        //{
+        //    //method to update the price of an item by sku
+        //    inventoryitem item = manager.finditembysku(sku);
 
-    }
+        //    if (item != null)
+        //    {
+        //        item.price = newprice;
+        //        return true;
+        //    }
+        //    console.writeline("item not found");
+        //    return false;
+        //}
 
     }
 }
+
+
