@@ -22,6 +22,26 @@ namespace InvManager
             Console.WriteLine("Item not found.");
         }
 
+        public static List<InventoryItem> GetAllInventoryItems()
+        {
+            return new List<InventoryItem>(stock.inventory.Values);
+        }
+
+        public static void UpdateItemStatus(string sku, string newStatus)
+        {
+            foreach (var entry in stock.inventory.Values)
+            {
+                if (entry.SKU == sku)
+                {
+                    entry.Status = newStatus;
+                    Console.WriteLine($"Status for item with SKU {sku} updated to: {newStatus}");
+                    return;
+                }
+            }
+
+            Console.WriteLine("Item not found.");
+        }
+
         static public void SaveToFile(string filePath)
         {
             using (StreamWriter writer = new StreamWriter(filePath))
@@ -69,6 +89,12 @@ namespace InvManager
                 }
             }
         }
+
+        public static void AddItemToInventory(InventoryItem item)
+        {
+            stock.AddToInventory(item);
+        }
+
 
         //commenting out the following block as it's calling undefined methods not in the files
 

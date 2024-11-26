@@ -46,6 +46,9 @@ public class InventoryItem
     public static InventoryItem FromCsv(string csvLine)
     {
         var values = csvLine.Split(',');
-        return new InventoryItem(values[0], values[1], values[2]);
+        return new InventoryItem(values[1].Trim(), values[2].Trim(), values[3].Trim())
+        {
+            ID = int.Parse(values[0].Trim())
+        };
     }
 }
